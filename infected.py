@@ -36,17 +36,14 @@ class State:
         # module itertools methode powerset
         list_couple = []
         list_defend = []
+
+    def getValue(self):
+        s = 0
         for x in self.graph:
             if not x.infected:
-                for y in x.link:
-                    if not y.infected:
-                        list_couple.append([x,y])
-            list_defend.append(
-            list_defend.append([x,list_couple])
-        
-                
-
-    #def getValue(self):
+                s += len(x.link)
+        return s
+            
         
 
 def initNetwork(n,p):
@@ -65,7 +62,9 @@ def initNetwork(n,p):
 
     for x in graph:
         if x.link == []:
-            number_rand = randint(0,n)
+            number_rand = randint(0,n-1)
+            while number_rand == x.number:
+                number_rand = randint(0,n-1)
             x.link.append(graph[number_rand])
             graph[number_rand].link.append(x)
         
@@ -80,8 +79,9 @@ def main(n,p):
     list_state = []
     graph=initNetwork(n,p)
     for x in graph:
-        print(x.number," : ")
+        print(x.number,":\n")
         for y in x.link:
             print(y.number)
+        print("\n____")
 
-main(15,0.01)
+main(15,0.1)
