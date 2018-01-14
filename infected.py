@@ -3,8 +3,8 @@ from itertools import *
 
 def powerset(iterable):    
     """
-        powerset d'itertools, la méthode n'existe pas explicitement j'ai fait un copier-coller
-        de la doc qui l'a proposée comme exemple d'utilisation de combinaison().
+        powerset d'itertools, la méthode n'existe pas explicitement j'ai fais un copier-coller
+        de la doc qui l'a proposée comme exemple d'utilisation de combinations().
         
         powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)
     """
