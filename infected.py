@@ -27,6 +27,7 @@ class State:
         self.list_infected = self.listInfected
         self.player = player        
 
+
     def listInfected(self):
         for x in self.graph:
             if x.infected:
@@ -41,7 +42,7 @@ class State:
         return list_attack
 
     def isFinished(self):
-        return getAttack() == []
+        return self.getAttack() == []
 
 
     def getDefense(self):
@@ -50,6 +51,7 @@ class State:
             if not x.infected:
                 list_couple = []
                 for y in x.link:
+                    # rajouter .number à x et y pour afficher les numeros des machines
                     list_couple.append([x,y])
                 list_combination = list(powerset(list_couple))
                 list_defend.append(list_combination[1:])
@@ -85,7 +87,10 @@ def initNetwork(n,p):
                 number_rand = randint(0,n-1)
             x.link.append(graph[number_rand])
             graph[number_rand].link.append(x)
-        
+
+    rand_affected = randint(0,n-1)
+    graph[rand_affected].infected = True
+    
     return graph
 
 
@@ -95,13 +100,22 @@ def main(n,p):
     graph=initNetwork(n,p)
     state = State(graph,None)
     L = state.getDefense()
+    print("")
     
     for x in graph:
-        print(x.number,":\n")
+        print(x.number,"( infected :",x.infected,")",":\n")
         for y in x.link:
-            print(y.number)
-        print("\n____")
+            print(y.number,"infected :",y.infected)
+        print("\n____\n")
     for x in L:
         print(x)
 
-main(15,0.1)
+
+# ATTENTION 
+# gaffe aux nombre de pc mis
+# surtout ...
+# surtout ne pas plus 10 pc avec une probabilité de 0.9
+# sous cause de plantage total
+# ATTENTION
+
+main(5,0.9)
