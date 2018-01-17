@@ -28,8 +28,8 @@ class State:
     def __init__(self,graph,player):
         self.graph = graph
         self.list_infected = self.listInfected
-        self.player = player        
-
+        self.player = player
+    
 
     def listInfected(self):
         for x in self.graph:
@@ -66,7 +66,12 @@ class State:
             if not x.infected:
                 s += len(x.link)
         return s
-            
+
+    def playAttack(self,coup):
+        for x in self.graph:
+            if x.number == coup.number:
+                x.infected = True
+        return State(slef.graph,None)
         
 
 def initNetwork(n,p):
@@ -109,10 +114,27 @@ def main(n,p):
         print(x,"( infected :",x.infected,")",":\n")
         for y in x.link:
             print(y,"infected :",y.infected)
-        print("\n____\n")
+        print("\n------\n")
 
     for x in L:
         print(x)
+    
+    state = state.playAttack(L[0][0])
+    graph = state.graph
+    L = state.getDefense()
+    print("ooooooooooooooooooooooooooooooooooooooooooo")
+    print(state.graph)
+    
+    for x in graph:
+        print(x,"( infected :",x.infected,")",":\n")
+        for y in x.link:
+            print(y,"infected :",y.infected)
+        print("\n------\n")
+
+    for x in L:
+        print(x)
+    print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+    
 
 
 # ATTENTION 
@@ -122,4 +144,4 @@ def main(n,p):
 # sous cause de plantage total
 # ATTENTION
 
-main(5,0.1)
+test = main(5,0.1)
