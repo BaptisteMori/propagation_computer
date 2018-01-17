@@ -19,6 +19,9 @@ class Computer:
         self.infected = False
         self.link = []
 
+    def __str__(self):
+        return str(self.number)
+
 
 class State:
 
@@ -103,10 +106,11 @@ def main(n,p):
     print("")
     
     for x in graph:
-        print(x.number,"( infected :",x.infected,")",":\n")
+        print(x,"( infected :",x.infected,")",":\n")
         for y in x.link:
-            print(y.number,"infected :",y.infected)
+            print(y,"infected :",y.infected)
         print("\n____\n")
+
     for x in L:
         print(x)
 
@@ -118,4 +122,4 @@ def main(n,p):
 # sous cause de plantage total
 # ATTENTION
 
-main(5,0.9)
+main(5,0.1)
