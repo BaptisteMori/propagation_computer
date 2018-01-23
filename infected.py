@@ -71,8 +71,17 @@ class State:
         for x in self.graph:
             if x.number == coup.number:
                 x.infected = True
-        return State(slef.graph,None)
+        return State(self.graph,None)
+
+    def delLink(self,couple):
+        couple[0].link.remove(couple[1])
+        couple[1].link.remove(couple[0])
         
+
+    def playDefense(self,coup):
+        for x in coup:
+            self.delLink(x)
+        return State(self.graph,None)
 
 def initNetwork(n,p):
     graph = []
@@ -105,27 +114,44 @@ def initNetwork(n,p):
 def main(n,p):
     list_infected = []
     list_state = []
+    
     graph=initNetwork(n,p)
-    state = State(graph,None)
-    L = state.getDefense()
-    print("")
+    list_state.append(State(graph,"defender"))
     
-    for x in graph:
-        print(x,"( infected :",x.infected,")",":\n")
-        for y in x.link:
-            print(y,"infected :",y.infected)
-        print("\n------\n")
+    present_state = list_state[-1]
 
-    for x in L:
-        print(x)
+    while not(present_state.isFinished()):
+
+        present_state = list_state[-1]
+        
+        print("")
+        
+        for x in graph:
+            print(x,"( infected :",x.infected,")",":\n")
+            for y in x.link:
+                print(y,"infected :",y.infected)
+            print("\n------\n")
     
-    state = state.playAttack(L[0][0])
-    graph = state.graph
-    L = state.getDefense()
+
+        if present_state.player="attacker":
+            coup=None
+            list_state.append(prensent_state.playAttack(coup))
+        elif present_state.player="defender":
+            coup=None
+            list_state.append(prensent_state.playDefense(coup))
+
+
+
+    
+    """
+    state2 = state.playDefense(L[0][0])
+    
+    graph2 = state2.graph
+    L = state2.getDefense()
     print("ooooooooooooooooooooooooooooooooooooooooooo")
-    print(state.graph)
+    print(state2.graph)
     
-    for x in graph:
+    for x in graph2:
         print(x,"( infected :",x.infected,")",":\n")
         for y in x.link:
             print(y,"infected :",y.infected)
@@ -134,7 +160,7 @@ def main(n,p):
     for x in L:
         print(x)
     print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
-    
+    """
 
 
 # ATTENTION 
