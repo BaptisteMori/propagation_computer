@@ -1,5 +1,7 @@
+
 from random import *
 from itertools import *
+from copy import deepcopy
 
 def powerset(iterable):    
     """
@@ -23,18 +25,46 @@ class Computer:
         return str(self.number)
 
 
+class IA:
+
+    def minmax(self,state,d):
+        if d == 0 or state.isFinished():
+            return state.getValue(),None
+        if state.player == "defender":
+            print('minmax defenser')
+            m = float("-inf")
+            c = None
+            for coup in state.getDefense():
+                state_value,c1 = self.minmax(state.playDefense(coup),d-1)
+                if state_value > m:
+                    m = state_value
+                    c = coup
+        elif state.player == "attacker":
+            print("minmax attacker")
+            m = float("inf")
+            c = None
+            for coup in state.getAttack():
+                state_value,c1 = self.minmax(state.playAttack(coup),d-1)
+                if state_value < m:
+                    m = state_value
+                    c = coup
+        return m,c
+
+
 class State:
 
     def __init__(self,graph,player):
         self.graph = graph
-        self.list_infected = self.listInfected
+        self.list_infected = self.listInfected()
         self.player = player
     
 
     def listInfected(self):
+        L = []
         for x in self.graph:
             if x.infected:
-                self.list_infected.append(x)
+                L.append(x)
+        return L
                 
     def getAttack(self):
         list_attack = []
@@ -71,17 +101,19 @@ class State:
         for x in self.graph:
             if x.number == coup.number:
                 x.infected = True
-        return State(self.graph,None)
+        return State(deepcopy(self.graph),"defender")
 
     def delLink(self,couple):
-        couple[0].link.remove(couple[1])
-        couple[1].link.remove(couple[0])
-        
+        if couple[1] in couple[0].link:
+            couple[0].link.remove(couple[1])
+        #couple[1].link.remove(couple[0])
+
 
     def playDefense(self,coup):
         for x in coup:
-            self.delLink(x)
-        return State(self.graph,None)
+            for y in x:
+                self.delLink(y)
+        return State(deepcopy(self.graph),"attacker")
 
 def initNetwork(n,p):
     graph = []
@@ -120,11 +152,13 @@ def main(n,p):
     
     present_state = list_state[-1]
 
+    ia = IA()
+
     while not(present_state.isFinished()):
 
         present_state = list_state[-1]
         
-        print("")
+        print(present_state.player)
         
         for x in graph:
             print(x,"( infected :",x.infected,")",":\n")
@@ -132,13 +166,17 @@ def main(n,p):
                 print(y,"infected :",y.infected)
             print("\n------\n")
     
+        new_state=deepcopy(present_state)
+        if present_state.player=="attacker":
+            value,coup = ia.minmax(new_state,3)
+            print("minmax coup = ", coup)
+            list_state.append(present_state.playAttack(coup))
+        elif present_state.player=="defender":
+            value,coup = ia.minmax(new_state,3)
+            print("minmax coup = ", coup)
+            list_state.append(present_state.playDefense(coup))
+        pause = input("oep")
 
-        if present_state.player="attacker":
-            coup=None
-            list_state.append(prensent_state.playAttack(coup))
-        elif present_state.player="defender":
-            coup=None
-            list_state.append(prensent_state.playDefense(coup))
 
 
 
@@ -170,4 +208,4 @@ def main(n,p):
 # sous cause de plantage total
 # ATTENTION
 
-test = main(5,0.1)
+test = main(5,0.5)
