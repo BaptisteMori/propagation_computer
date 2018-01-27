@@ -57,7 +57,16 @@ class State:
         self.graph = graph
         self.list_infected = self.listInfected()
         self.player = player
-    
+
+    def __str__(self):
+        ch = ""
+        ch += "\n" + self.player + " :\n\n"
+        for x in self.graph:
+            ch += str(x) + " ( infected : " + str(x.infected) + " ) :\n\n"
+            for y in x.link:
+                ch += str(y) + " infected : " + str(y.infected) + "\n"
+            ch += "\n------\n\n"
+        return ch
 
     def listInfected(self):
         L = []
@@ -160,13 +169,7 @@ def main(n,p):
 
         present_state = list_state[-1]
         
-        print(present_state.player)
-        
-        for x in graph:
-            print(x,"( infected :",x.infected,")",":\n")
-            for y in x.link:
-                print(y,"infected :",y.infected)
-            print("\n------\n")
+        print(present_state)
     
         new_state=deepcopy(present_state)
         if present_state.player=="attacker":
