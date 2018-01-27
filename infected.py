@@ -94,7 +94,9 @@ class State:
         s = 0
         for x in self.graph:
             if not x.infected:
-                s += len(x.link)
+                for y in x.link:
+                    if not(y.infected):
+                        s += 1
         return s
 
     def playAttack(self,coup):
@@ -153,7 +155,7 @@ def main(n,p):
     present_state = list_state[-1]
 
     ia = IA()
-
+    print("value :",present_state.getValue())
     while not(present_state.isFinished()):
 
         present_state = list_state[-1]
