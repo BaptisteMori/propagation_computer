@@ -5,8 +5,10 @@ from copy import deepcopy
 
 def powerset(iterable):    
     """
-        powerset d'itertools, la méthode n'existe pas explicitement j'ai fais un copier-coller
-        de la doc qui l'a proposée comme exemple d'utilisation de combinations().
+        powerset d'itertools, la méthode n'existe pas explicitement on a fait un copier-coller
+        de la doc qui l'a proposée comme exemple d'utilisation de combinations()
+
+        https://docs.python.org/3/library/itertools.html
         
         powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)
     """
@@ -31,16 +33,15 @@ class IA:
         if d == 0 or state.isFinished():
             return state.getValue(),None
         if state.player == "defender":
-            print('minmax defenser')
             m = float("-inf")
             c = None
-            for coup in state.getDefense():
-                state_value,c1 = self.minmax(state.playDefense(coup),d-1)
-                if state_value > m:
-                    m = state_value
-                    c = coup
+            for ordi in state.getDefense():
+                for coup in ordi:
+                    state_value,c1 = self.minmax(state.playDefense(coup),d-1)
+                    if state_value > m:
+                        m = state_value
+                        c = coup
         elif state.player == "attacker":
-            print("minmax attacker")
             m = float("inf")
             c = None
             for coup in state.getAttack():
@@ -93,7 +94,6 @@ class State:
             if not x.infected:
                 list_couple = []
                 for y in x.link:
-                    # rajouter .number à x et y pour afficher les numeros des machines
                     list_couple.append([x,y])
                 list_combination = list(powerset(list_couple))
                 list_defend.append(list_combination[1:])
@@ -117,13 +117,13 @@ class State:
     def delLink(self,couple):
         if couple[1] in couple[0].link:
             couple[0].link.remove(couple[1])
-        #couple[1].link.remove(couple[0])
+        if couple[0] in couple[1].link:
+            couple[1].link.remove(couple[0])
 
 
     def playDefense(self,coup):
         for x in coup:
-            for y in x:
-                self.delLink(y)
+            self.delLink(x)
         return State(deepcopy(self.graph),"attacker")
 
 def initNetwork(n,p):
@@ -178,32 +178,17 @@ def main(n,p):
             list_state.append(present_state.playAttack(coup))
         elif present_state.player=="defender":
             value,coup = ia.minmax(new_state,3)
+            for x in coup:
+                ch = ""
+                for ordi in x:
+                    ch += str(ordi) + " "
+                ch += "\n"
+                print(ch)
+                    
             print("minmax coup = ", coup)
             list_state.append(present_state.playDefense(coup))
         pause = input("oep")
-
-
-
-
-    
-    """
-    state2 = state.playDefense(L[0][0])
-    
-    graph2 = state2.graph
-    L = state2.getDefense()
-    print("ooooooooooooooooooooooooooooooooooooooooooo")
-    print(state2.graph)
-    
-    for x in graph2:
-        print(x,"( infected :",x.infected,")",":\n")
-        for y in x.link:
-            print(y,"infected :",y.infected)
-        print("\n------\n")
-
-    for x in L:
-        print(x)
-    print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
-    """
+    print(present_state)
 
 
 # ATTENTION 
