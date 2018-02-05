@@ -1,4 +1,7 @@
 
+# Baptiste Mori 21602052
+# Valentin Leblond 21609038
+
 from random import *
 from itertools import *
 from copy import deepcopy
@@ -173,7 +176,7 @@ def main(n,p):
     list_state.append(present_state)
 
     ia = IA()
-    print("value :",present_state.getValue())
+    print("value defender de départ :",present_state.getValue())
     while not(present_state.isFinished()):
 
         print(present_state)
