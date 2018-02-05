@@ -109,22 +109,31 @@ class State:
         return s
 
     def playAttack(self,coup):
-        for x in self.graph:
+        new_graph = deepcopy(self.graph)
+        for x in new_graph:
             if x.number == coup.number:
                 x.infected = True
-        return State(deepcopy(self.graph),"defender")
+        return State(new_graph,"defender")
 
-    def delLink(self,couple):
-        if couple[1] in couple[0].link:
-            couple[0].link.remove(couple[1])
-        if couple[0] in couple[1].link:
-            couple[1].link.remove(couple[0])
+    def delLink(self,new_graph,couple):
+        first = None
+        second = None
+        for com in new_graph:
+            if com.number == couple[0].number:
+                first = com
+            if com.number == couple[1].number:
+                second = com
+        if second in first.link:
+            first.link.remove(second)
+        if first in second.link:
+            second.link.remove(first)
 
 
     def playDefense(self,coup):
+        new_state = State(deepcopy(self.graph),"attacker")
         for x in coup:
-            self.delLink(x)
-        return State(deepcopy(self.graph),"attacker")
+            new_state.delLink(new_state.graph,x)
+        return new_state
 
 def initNetwork(n,p):
     graph = []
@@ -159,36 +168,35 @@ def main(n,p):
     list_state = []
     
     graph=initNetwork(n,p)
-    list_state.append(State(graph,"defender"))
     
-    present_state = list_state[-1]
+    present_state = State(graph,"attacker")
+    list_state.append(present_state)
 
     ia = IA()
     print("value :",present_state.getValue())
     while not(present_state.isFinished()):
 
-        present_state = list_state[-1]
-        
         print(present_state)
-    
+        
         new_state=deepcopy(present_state)
         if present_state.player=="attacker":
             value,coup = ia.minmax(new_state,3)
-            print("minmax coup = ", coup)
-            list_state.append(present_state.playAttack(coup))
-        elif present_state.player=="defender":
+            present_state = present_state.playAttack(coup)
+            list_state.append(present_state)
+            print("choix attacker : " + str(coup)) 
+        else:
             value,coup = ia.minmax(new_state,3)
             for x in coup:
                 ch = ""
                 for ordi in x:
                     ch += str(ordi) + " "
                 ch += "\n"
-                print(ch)
-                    
-            print("minmax coup = ", coup)
-            list_state.append(present_state.playDefense(coup))
+            print("choix defender : " + ch)
+            present_state = present_state.playDefense(coup)
+            list_state.append(present_state)
         pause = input("oep")
     print(present_state)
+    print("value defender : " + str(present_state.getValue()))
 
 
 # ATTENTION 
@@ -198,4 +206,4 @@ def main(n,p):
 # sous cause de plantage total
 # ATTENTION
 
-test = main(5,0.5)
+test = main(5,0.2)
