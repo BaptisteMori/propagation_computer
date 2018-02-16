@@ -29,6 +29,9 @@ class Computer:
     def __str__(self):
         return str(self.number)
 
+    def __eq__(self,other):
+        return self.number == other.number
+
 
 class IA:
 
@@ -114,7 +117,7 @@ class State:
     def playAttack(self,coup):
         new_graph = deepcopy(self.graph)
         for x in new_graph:
-            if x.number == coup.number:
+            if x == coup:
                 x.infected = True
         return State(new_graph,"defender")
 
@@ -122,9 +125,9 @@ class State:
         first = None
         second = None
         for com in new_graph:
-            if com.number == couple[0].number:
+            if com == couple[0]:
                 first = com
-            if com.number == couple[1].number:
+            if com == couple[1]:
                 second = com
         if second in first.link:
             first.link.remove(second)
