@@ -47,7 +47,7 @@ class IA:
                     if state_value > m:
                         m = state_value
                         c = coup
-        elif state.player == "attacker":
+        else:
             m = float("inf")
             c = None
             for coup in state.getAttack():
@@ -56,6 +56,25 @@ class IA:
                     m = state_value
                     c = coup
         return m,c
+
+    def alphabeta(self,state,alpha,beta,d):
+        if d == 0 or state.isFinished():
+            return state.getValue()
+        else:
+            if state.player == "defender":
+                for ordi in state.getDefense():
+                    for coup in ordi:
+                        alpha = max(alpha,alphabeta(state.playDefense(coup),alpha,beta,d-1))
+                        if alpha >= beta:
+                            return alpha
+                return alpha
+            else:
+                for ordi in state.getAttack():
+                    for coup in ordi:
+                        beta = min(beta,alphabeta(state.playAttack(coup),alpha,beta,d-1))
+                        if alpha >= beta:
+                            return beta
+                return beta
 
 
 class State:
