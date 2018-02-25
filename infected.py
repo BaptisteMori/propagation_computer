@@ -35,7 +35,7 @@ class Computer:
 
 class IA:
 
-    def minmax(self,state,d):
+    def minmax(self,state,d,alphabeta):
         if d == 0 or state.isFinished():
             return state.getValue(),None
         if state.player == "defender":
@@ -43,7 +43,10 @@ class IA:
             c = None
             for ordi in state.getDefense():
                 for coup in ordi:
-                    state_value,c1 = self.minmax(state.playDefense(coup),d-1)
+                    if alphabeta:
+                        state_value = self.alphabeta(state.playDefense(coup),m,state.getValue(),d-1)
+                    else:
+                        state_value,c1 = self.minmax(state.playDefense(coup),d-1)
                     if state_value > m:
                         m = state_value
                         c = coup
@@ -51,7 +54,10 @@ class IA:
             m = float("inf")
             c = None
             for coup in state.getAttack():
-                state_value,c1 = self.minmax(state.playAttack(coup),d-1)
+                if alphabeta:
+                    state_value = self.alphabeta(state.playAttack(coup),state.getValue(),m,d-1)
+                else:
+                    state_value,c1 = self.minmax(state.playAttack(coup),d-1)
                 if state_value < m:
                     m = state_value
                     c = coup
@@ -64,16 +70,15 @@ class IA:
             if state.player == "defender":
                 for ordi in state.getDefense():
                     for coup in ordi:
-                        alpha = max(alpha,alphabeta(state.playDefense(coup),alpha,beta,d-1))
+                        alpha = max(alpha,self.alphabeta(state.playDefense(coup),alpha,beta,d-1))
                         if alpha >= beta:
                             return alpha
                 return alpha
             else:
                 for ordi in state.getAttack():
-                    for coup in ordi:
-                        beta = min(beta,alphabeta(state.playAttack(coup),alpha,beta,d-1))
-                        if alpha >= beta:
-                            return beta
+                    beta = min(beta,self.alphabeta(state.playAttack(ordi),alpha,beta,d-1))
+                    if alpha >= beta:
+                        return beta
                 return beta
 
 
@@ -143,15 +148,13 @@ class State:
     def delLink(self,new_graph,couple):
         first = None
         second = None
-        for com in new_graph:
-            if com == couple[0]:
-                first = com
-            if com == couple[1]:
-                second = com
-        if second in first.link:
-            first.link.remove(second)
-        if first in second.link:
-            second.link.remove(first)
+        for ordi in new_graph:
+            if ordi == couple[0]:
+                first = ordi
+            if ordi == couple[1]:
+                second = ordi
+        first.link.remove(second)
+        second.link.remove(first)
 
 
     def playDefense(self,coup):
@@ -160,7 +163,8 @@ class State:
             new_state.delLink(new_state.graph,x)
         return new_state
 
-def initNetwork(n,p):
+
+def initNetwork(n,infected,p):
     graph = []
     
     for i in range(n):
@@ -182,17 +186,20 @@ def initNetwork(n,p):
             x.link.append(graph[number_rand])
             graph[number_rand].link.append(x)
 
-    rand_affected = randint(0,n-1)
-    graph[rand_affected].infected = True
-    
+    nbInfected = 0
+    while nbInfected != infected:
+        rand_affected = randint(0,n-1)
+        if not graph[rand_affected].infected:
+            graph[rand_affected].infected = True
+            nbInfected += 1
     return graph
 
 
-def main(n,p):
+def main(n,i,p,prof_attacker,prof_defender,alphabeta):
     list_infected = []
     list_state = []
     
-    graph=initNetwork(n,p)
+    graph=initNetwork(n,i,p)
     
     present_state = State(graph,"attacker")
     list_state.append(present_state)
@@ -202,24 +209,25 @@ def main(n,p):
     while not(present_state.isFinished()):
 
         print(present_state)
+        l = present_state.getDefense()
         
         new_state=deepcopy(present_state)
         if present_state.player=="attacker":
-            value,coup = ia.minmax(new_state,3)
+            
+            value,coup = ia.minmax(new_state,prof_attacker,alphabeta)
+            
             present_state = present_state.playAttack(coup)
             list_state.append(present_state)
             print("choix attacker : " + str(coup)) 
         else:
-            value,coup = ia.minmax(new_state,3)
+            
+            value,coup = ia.minmax(new_state,prof_defender,alphabeta)
+            
             for x in coup:
-                ch = ""
-                for ordi in x:
-                    ch += str(ordi) + " "
-                ch += "\n"
-            print("choix defender : " + ch)
+                print("choix defender : ",str(x[0]),str(x[1]))
             present_state = present_state.playDefense(coup)
             list_state.append(present_state)
-        pause = input("oep")
+        pause = input("...")
     print(present_state)
     print("value defender : " + str(present_state.getValue()))
 
@@ -231,4 +239,4 @@ def main(n,p):
 # sous cause de plantage total
 # ATTENTION
 
-test = main(5,0.2)
+main(15,1,0.2,3,3,True)
