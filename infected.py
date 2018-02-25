@@ -164,42 +164,42 @@ class State:
         return new_state
 
 
-def initNetwork(n,infected,p):
+def initNetwork(nbOrdi,nbInfected,proba):
     graph = []
     
-    for i in range(n):
+    for i in range(nbOrdi):
         graph.append(Computer(i))
 
-    for i in range(n):
-        for j in range(i,n):
+    for i in range(nbOrdi):
+        for j in range(i,nbOrdi):
             if i != j:
                 rand = random()
-                if p >= rand:
+                if proba >= rand:
                     graph[i].link.append(graph[j])
                     graph[j].link.append(graph[i])
 
     for x in graph:
         if x.link == []:
-            number_rand = randint(0,n-1)
+            number_rand = randint(0,nbOrdi-1)
             while number_rand == x.number:
-                number_rand = randint(0,n-1)
+                number_rand = randint(0,nbOrdi-1)
             x.link.append(graph[number_rand])
             graph[number_rand].link.append(x)
 
-    nbInfected = 0
-    while nbInfected != infected:
-        rand_affected = randint(0,n-1)
+    cpt = 0
+    while cpt != nbInfected:
+        rand_affected = randint(0,nbOrdi-1)
         if not graph[rand_affected].infected:
             graph[rand_affected].infected = True
-            nbInfected += 1
+            cpt += 1
     return graph
 
 
-def main(n,i,p,prof_attacker,prof_defender,alphabeta):
+def main(nbOrdi,nbInfected,proba,prof_attacker,prof_defender,alphabeta):
     list_infected = []
     list_state = []
     
-    graph=initNetwork(n,i,p)
+    graph=initNetwork(nbOrdi,nbInfected,proba)
     
     present_state = State(graph,"attacker")
     list_state.append(present_state)
@@ -209,9 +209,8 @@ def main(n,i,p,prof_attacker,prof_defender,alphabeta):
     while not(present_state.isFinished()):
 
         print(present_state)
-        l = present_state.getDefense()
-        
         new_state=deepcopy(present_state)
+        
         if present_state.player=="attacker":
             
             value,coup = ia.minmax(new_state,prof_attacker,alphabeta)
