@@ -301,12 +301,13 @@ def initNetwork(nbOrdi,nbInfected,proba):
     return graph
 
 
-def main(nbOrdi,nbInfected,proba,prof_attacker,prof_defender,alphabeta):
+def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
     """
         Fonction principale
 
         param (int) nbOrdi : nombre d'ordinateurs du reseau
         param (int) nbInfected : nombre d'ordinateurs infectes au départ
+        param (float) proba : probabilité qu'un lien se forme entre 2 ordinateurs
         param (int) prof_attacker : profondeur de l'IA de l'attaquant
         param (int) prof_defender : profondeur de l'IA du defenseur
         param (boolean) alphabeta : utilisation de l'algorithme alphabeta
@@ -342,6 +343,7 @@ def main(nbOrdi,nbInfected,proba,prof_attacker,prof_defender,alphabeta):
             present_state = present_state.playDefense(coup)
             list_state.append(present_state)
         pause = input("...")
+        print("<>"*30)
     print(present_state)
     print("value defender : " + str(present_state.getValue()))
 
