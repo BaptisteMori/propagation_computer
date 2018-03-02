@@ -317,7 +317,7 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
     
     graph = initNetwork(nbOrdi,nbInfected,proba)
     
-    present_state = State(graph,"attacker")
+    present_state = State(graph,"defender")
     list_state.append(present_state)
 
     ia = IA()
@@ -330,27 +330,39 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
         if present_state.player == "attacker":
             
             value,coup = ia.minmax(new_state,prof_attacker,alphabeta)
+            print("choix attacker : " + str(coup))
             
             present_state = present_state.playAttack(coup)
             list_state.append(present_state)
-            print("choix attacker : " + str(coup)) 
         else:
             
             value,coup = ia.minmax(new_state,prof_defender,alphabeta)
             
             for x in coup:
                 print("choix defender : ",str(x[0]),"--",str(x[1]))
+                
             present_state = present_state.playDefense(coup)
             list_state.append(present_state)
         pause = input("...")
         print("<>"*30)
+        print("Value defender :",present_state.getValue())
     print(present_state)
     print("value defender : " + str(present_state.getValue()))
+
+    cpt_com_infected = 0
+    for ordi in present_state.graph:
+        if ordi.infected:
+            cpt_com_infected += 1
+
+    if nbOrdi//2 < cpt_com_infected:
+        print("L'attaquant a gagné")
+    else:
+        print("Le defenseur a gagné")
 
 
 if __name__ == "__main__":
     
-    main(15,1,0.2,3,3,True)
+    main(5,1,0.5,5,5,True)
 
 
 
