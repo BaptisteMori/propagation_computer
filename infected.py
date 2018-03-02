@@ -7,6 +7,9 @@
 from random import *
 from itertools import *
 from copy import deepcopy
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 def powerset(iterable):    
     """
@@ -53,6 +56,9 @@ class IA:
     """
         Classe de l'IA
     """
+    def __init__(self):
+        self.n_mm = 0
+        self.n_ab = 0
 
     def minmax(self,state,d,alphabeta):
         """
@@ -63,6 +69,8 @@ class IA:
             param (boolean) alphabeta : boolean pour utilisation ou non de l'algorithme alphabeta
             return (int,Computer or tuple): la valeur du noeud et le coup a jouer pour aller a ce noeud
         """
+        if not alphabeta:
+            self.n_mm += 1
         if d == 0 or state.isFinished():
             return state.getValue(),None
         if state.player == "defender":
@@ -100,6 +108,7 @@ class IA:
             param (int) d : la profondeur dans l'arbre de l'IA
             return (int) : la meilleur valeur obtenable du noeud
         """
+        self.n_ab += 1
         if d == 0 or state.isFinished():
             return state.getValue()
         else:
@@ -116,6 +125,10 @@ class IA:
                     if alpha >= beta:
                         return beta
                 return beta
+
+    def reset(self):
+        self.n_mm = 0
+        self.n_ab = 0
 
 
 class State:
@@ -301,6 +314,83 @@ def initNetwork(nbOrdi,nbInfected,proba):
     return graph
 
 
+def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]):
+    """
+        Fonction principale avec alphabeta et minmax en parallèle
+
+        param (int) nbOrdi : nombre d'ordinateurs du reseau
+        param (int) nbInfected : nombre d'ordinateurs infectes au départ
+        param (float) proba : probabilité qu'un lien se forme entre 2 ordinateurs
+        param (int) prof_attacker : profondeur de l'IA de l'attaquant
+        param (int) prof_defender : profondeur de l'IA du defenseur
+        param (boolean) alphabeta : utilisation de l'algorithme alphabeta
+    """
+    list_infected = []
+    list_state = []
+
+    if sameGraph != []:
+        graph = deepcopy(sameGraph)
+        graph_mm = deepcopy(sameGraph)
+    else:
+        graph = initNetwork(nbOrdi,nbInfected,proba)
+        graph_mm = deepcopy(graph)
+    
+    present_state = State(graph,"defender")
+    present_state_mm = State(graph_mm,"defender")
+    list_state.append(present_state)
+
+    ia = IA()
+    print("value defender de départ :",present_state.getValue())
+    while not(present_state.isFinished()):
+
+        print(present_state)
+        print(present_state_mm)
+        new_state = deepcopy(present_state)
+        new_state_mm = deepcopy(present_state_mm)
+        
+        if present_state.player == "attacker":
+            
+            value,coup = ia.minmax(new_state,prof_attacker,True)
+
+            value_mm,coup_mm = ia.minmax(new_state_mm,prof_attacker,False)
+            print("n_ab :",ia.n_ab)
+            print("n_mm :",ia.n_mm)
+            print("choix attacker : " + str(coup))
+            print("choix attacker_minmax : " + str(coup_mm))
+            
+            
+            present_state = present_state.playAttack(coup)
+            present_state_mm = present_state_mm.playAttack(coup_mm)
+            list_state.append(present_state)
+        else:
+            
+            value,coup = ia.minmax(new_state,prof_defender,True)
+            
+            value_mm,coup_mm = ia.minmax(new_state_mm,prof_defender,False)
+            print("n_ab :",ia.n_ab)
+            print("n_mm :",ia.n_mm)
+            
+            for x in coup:
+                print("choix defender : ",str(x[0]),"--",str(x[1]))
+                
+            for x in coup_mm:
+                print("choix defender_minmax : ",str(x[0]),"--",str(x[1]))
+                
+            present_state = present_state.playDefense(coup)
+            present_state_mm = present_state_mm.playDefense(coup_mm)
+            list_state.append(present_state)
+        #ia.reset()
+        #pause = input("...")
+        print("<>"*30)
+        print("Value defender :",present_state.getValue())
+        print("Value defender_mm :",present_state_mm.getValue())
+    print(present_state)
+    print(present_state_mm)
+    print("value defender : " + str(present_state.getValue()))
+    print("value defender_minmax : " + str(present_state_mm.getValue()))
+    return ia
+
+
 def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
     """
         Fonction principale
@@ -348,7 +438,7 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
         print("Value defender :",present_state.getValue())
     print(present_state)
     print("value defender : " + str(present_state.getValue()))
-
+    
     cpt_com_infected = 0
     for ordi in present_state.graph:
         if ordi.infected:
@@ -358,13 +448,44 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
         print("L'attaquant a gagné")
     else:
         print("Le defenseur a gagné")
+    print("Nombre de noeuds parcourus durant la partie :",ia.n_mm + ia.n_ab)
 
+
+def showGraphStat(x,ab,mm):
+    plt.plot(x,ab,"red")
+    plt.plot(x,mm,"green")
+    plt.show()
+
+def testProf(prof):
+    x = np.arange(1,prof+1)
+    ab = np.zeros(prof)
+    mm = np.zeros(prof)
+    graph = initNetwork(5,1,0.5)
+    for k in range(1,prof+1):
+        ia = main2Ia(5,1,0.5,k,k,graph)
+        ab[k-1] = ia.n_ab
+        mm[k-1] = ia.n_mm
+    print(ab)
+    print(mm)
+    showGraphStat(x,ab,mm)
+
+def testProba(probaMax):
+    x = np.arange(0,probaMax+0.1,0.1)
+    ab = np.zeros(int(10*probaMax)+1)
+    mm = np.zeros(int(10*probaMax)+1)
+    for p in range(int(probaMax*10)+1):
+        ia = main2Ia(5,1,p/10,5,5)
+        ab[p-1] = ia.n_ab
+        mm[p-1] = ia.n_mm
+    print(ab)
+    print(mm)
+    showGraphStat(x,ab,mm)
 
 if __name__ == "__main__":
     
-    main(5,1,0.5,5,5,True)
-
-
+    #main(5,1,0.5,5,5,True)
+    testProf(6)
+    #testProba(0.6)
 
 
 
