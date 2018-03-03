@@ -9,6 +9,7 @@ from itertools import *
 from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 
 
 def powerset(iterable):    
@@ -57,6 +58,12 @@ class IA:
         Classe de l'IA
     """
     def __init__(self):
+        """
+            Contient les compteurs des algorithmes alphabeta et minmax
+
+            atribut (int) n_mm : conteur de minmax
+            atribut (int) n_ab : conteur de alphabeta
+        """
         self.n_mm = 0
         self.n_ab = 0
 
@@ -127,6 +134,9 @@ class IA:
                 return beta
 
     def reset(self):
+        """
+            rinitialise les compteurs
+        """
         self.n_mm = 0
         self.n_ab = 0
 
@@ -323,7 +333,7 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         param (float) proba : probabilité qu'un lien se forme entre 2 ordinateurs
         param (int) prof_attacker : profondeur de l'IA de l'attaquant
         param (int) prof_defender : profondeur de l'IA du defenseur
-        param (boolean) alphabeta : utilisation de l'algorithme alphabeta
+        param (list) sameGraph : utilisation d'un graph particulier
     """
     list_infected = []
     list_state = []
@@ -342,8 +352,9 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
     ia = IA()
     print("value defender de départ :",present_state.getValue())
     while not(present_state.isFinished()):
-
+        print("Alphabeta :")
         print(present_state)
+        print("Minmax :")
         print(present_state_mm)
         new_state = deepcopy(present_state)
         new_state_mm = deepcopy(present_state_mm)
@@ -384,7 +395,9 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         print("<>"*30)
         print("Value defender :",present_state.getValue())
         print("Value defender_mm :",present_state_mm.getValue())
+    print("Alphabeta :")
     print(present_state)
+    print("Minmax :")
     print(present_state_mm)
     print("value defender : " + str(present_state.getValue()))
     print("value defender_minmax : " + str(present_state_mm.getValue()))
@@ -452,11 +465,23 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
 
 
 def showGraphStat(x,ab,mm):
+    """
+        affiche graphiquement x en fonction de ab et x en fonction de mm
+    """
     plt.plot(x,ab,"red")
     plt.plot(x,mm,"green")
+    courbe_alphabeta = mlines.Line2D(x, ab, color='red', label='Alphabeta')
+    courbe_minmax = mlines.Line2D(x, mm, color='green', label='Minmax')
+    plt.legend(handles=[courbe_alphabeta,courbe_minmax])
     plt.show()
 
 def testProf(prof):
+    """
+        test du nombre de calculs des algorithmes de 1 à prof
+
+        param (int) prof : la profondeur maximale auquel on va regarder
+        note : on utilisera le meme graph pour le test de chaque profondeur
+    """
     x = np.arange(1,prof+1)
     ab = np.zeros(prof)
     mm = np.zeros(prof)
@@ -470,6 +495,12 @@ def testProf(prof):
     showGraphStat(x,ab,mm)
 
 def testProba(probaMax):
+    """
+        test du nombre de calculs des algorithmes de 1 à probaMax
+
+        param (float) probaMax : la probabilite maximale auquel on va regarder
+        note : on utilisera pas le même graph pour chaque probabilité
+    """
     x = np.arange(0,probaMax+0.1,0.1)
     ab = np.zeros(int(10*probaMax)+1)
     mm = np.zeros(int(10*probaMax)+1)
