@@ -522,8 +522,11 @@ def testProba(probaMax):
 if __name__ == "__main__":
     
     main(5,1,0.5,5,5,True)
+    
     #main2Ia(5,1,0.5,5,5)
+    
     #testProf(6)
+    
     #testProba(0.6)
 
 
