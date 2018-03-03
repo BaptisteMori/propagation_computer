@@ -10,6 +10,6 @@ Pour tester le jeux, il suffit de lancer infected.py.
 
 Pour choisir l'IA Alphabeta il suffit de mettre True en 6ieme paramètre de la fonction main et False pour choisir Minmax.
 
-Pour lancer les 2 IA en parallèles, il faut décommenter la ligne 401 (pour mettre la pause entre chaque coup) et décommenter la ligne 526 afin d'exécuter la fonction main2Ia.
+Pour lancer les 2 IA en parallèles, il faut décommenter la fonction main2Ia à la fin du fichier.
 
-Les fonctions testProf et testProba permette de faire les graphiques présent dans le rapport, (commentez la ligne 401 pour enlever la pause).
+Les fonctions testProf et testProba permette de faire les graphiques présent dans le rapport, (décommentez la ligne 401 pour enlever la pause pour utiliser les tests).

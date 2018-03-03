@@ -398,7 +398,7 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
             present_state_mm = present_state_mm.playDefense(coup_mm)
             list_state.append(present_state)
         #ia.reset()
-        #pause = input("...")
+        pause = input("...")
         print("<>"*30)
         print("Value defender_ab :",present_state.getValue())
         print("Value defender_mm :",present_state_mm.getValue())
