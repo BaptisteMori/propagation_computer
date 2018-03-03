@@ -259,7 +259,7 @@ class State:
             Supprime le lien entre 2 ordinateurs
 
             param (list) new_graph : le graph dans lequel on va supprimer le lien
-            param (list) : couple d'ordinateurs a separer
+            param (list) couple : couple d'ordinateurs a separer
         """
         first = None
         second = None
@@ -351,7 +351,7 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
 
     ia = IA()
     print("value defender de départ :",present_state.getValue())
-    while not(present_state.isFinished()):
+    while not(present_state.isFinished()) or not(present_state_mm.isFinished()):
         print("Alphabeta :")
         print(present_state)
         print("Minmax :")
@@ -360,32 +360,39 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         new_state_mm = deepcopy(present_state_mm)
         
         if present_state.player == "attacker":
-            
-            value,coup = ia.minmax(new_state,prof_attacker,True)
 
-            value_mm,coup_mm = ia.minmax(new_state_mm,prof_attacker,False)
+            if not(present_state.isFinished()):
+                value,coup = ia.minmax(new_state,prof_attacker,True)
+                present_state = present_state.playAttack(coup)
+                print("choix attacker_alphabeta : " + str(coup))
+            if not(present_state_mm.isFinished()):
+                value_mm,coup_mm = ia.minmax(new_state_mm,prof_attacker,False) 
+                present_state_mm = present_state_mm.playAttack(coup_mm)
+                print("choix attacker_minmax : " + str(coup_mm))
+            
             print("n_ab :",ia.n_ab)
             print("n_mm :",ia.n_mm)
-            print("choix attacker : " + str(coup))
-            print("choix attacker_minmax : " + str(coup_mm))
             
-            
-            present_state = present_state.playAttack(coup)
-            present_state_mm = present_state_mm.playAttack(coup_mm)
             list_state.append(present_state)
         else:
             
-            value,coup = ia.minmax(new_state,prof_defender,True)
-            
-            value_mm,coup_mm = ia.minmax(new_state_mm,prof_defender,False)
+            if not(present_state.isFinished()):
+                value,coup = ia.minmax(new_state,prof_defender,True)
+                for x in coup:
+                    print("choix defender_alphabeta : ",str(x[0]),"--",str(x[1]))
+
+            if not(present_state_mm.isFinished()):
+                value_mm,coup_mm = ia.minmax(new_state_mm,prof_defender,False)
+                for x in coup_mm:
+                    print("choix defender_minmax : ",str(x[0]),"--",str(x[1]))
+
+
             print("n_ab :",ia.n_ab)
             print("n_mm :",ia.n_mm)
             
-            for x in coup:
-                print("choix defender : ",str(x[0]),"--",str(x[1]))
+            
                 
-            for x in coup_mm:
-                print("choix defender_minmax : ",str(x[0]),"--",str(x[1]))
+            
                 
             present_state = present_state.playDefense(coup)
             present_state_mm = present_state_mm.playDefense(coup_mm)
@@ -393,13 +400,13 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         #ia.reset()
         #pause = input("...")
         print("<>"*30)
-        print("Value defender :",present_state.getValue())
+        print("Value defender_ab :",present_state.getValue())
         print("Value defender_mm :",present_state_mm.getValue())
     print("Alphabeta :")
     print(present_state)
     print("Minmax :")
     print(present_state_mm)
-    print("value defender : " + str(present_state.getValue()))
+    print("value defender_alphabeta : " + str(present_state.getValue()))
     print("value defender_minmax : " + str(present_state_mm.getValue()))
     return ia
 
@@ -514,8 +521,9 @@ def testProba(probaMax):
 
 if __name__ == "__main__":
     
-    #main(5,1,0.5,5,5,True)
-    testProf(6)
+    main(5,1,0.5,5,5,True)
+    #main2Ia(5,1,0.5,5,5)
+    #testProf(6)
     #testProba(0.6)
 
 
