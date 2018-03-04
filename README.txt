@@ -6,7 +6,7 @@ groupe 4A
 
 Tous les lancements sont dans le if __name__ == "__main__" à la fin du fichier infected.py. 
 
-Pour tester le jeux, il suffit de lancer infected.py.
+Pour tester le jeux, il suffit de lancer infected.py qui lancera la fonction main (qui utilise alphabeta).
 
 Pour choisir l'IA Alphabeta il suffit de mettre True en 6ieme paramètre de la fonction main et False pour choisir Minmax.
 

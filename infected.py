@@ -398,7 +398,7 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
             
             list_state.append(present_state)
         #ia.reset()
-        #pause = input("...")
+        pause = input("...")
         print("<>"*30)
         print("Value defender_ab :",present_state.getValue())
         print("Value defender_mm :",present_state_mm.getValue())
@@ -438,15 +438,20 @@ def main(nbOrdi, nbInfected, proba, prof_attacker, prof_defender, alphabeta):
         new_state = deepcopy(present_state)
         
         if present_state.player == "attacker":
-            
-            value,coup = ia.minmax(new_state,prof_attacker,alphabeta)
+            if alphabeta:
+                value,coup = ia.alphabeta(new_state,float("-inf"),float("inf"),prof_attacker)
+            else:
+                value,coup = ia.minmax(new_state,prof_attacker)
             print("choix attacker : " + str(coup))
             
             present_state = present_state.playAttack(coup)
             list_state.append(present_state)
         else:
-            
-            value,coup = ia.minmax(new_state,prof_defender,alphabeta)
+
+            if alphabeta:
+                value,coup = ia.alphabeta(new_state,float("-inf"),float("inf"),prof_defender)
+            else :
+                value,coup = ia.minmax(new_state,prof_defender)
             
             for x in coup:
                 print("choix defender : ",str(x[0]),"--",str(x[1]))
@@ -521,13 +526,13 @@ def testProba(probaMax):
 
 if __name__ == "__main__":
     
-    #main(5,1,0.5,5,5,True)
+    main(5,1,0.5,5,5,True)
     
     #main2Ia(5,1,0.5,5,5)
     
     #testProf(6)
     
-    testProba(0.6)
+    #testProba(0.6)
 
 
 

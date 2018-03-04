@@ -63,38 +63,6 @@ L'objectif de ce TP est de mettre en place deux intelligence artificielles, la p
 
 Nous allons procéder à des expérimentation sur le nombre de nœuds que parcours chaque algorithme afin de comparer Minmax et Alphabeta.
 
-\section{Désaccord sur les choix des deux algorithmes}
-
-Nous avons mis les deux algorithme en parallèle sur le même réseaux pour voir si ils avaient les mêmes décisions de coups. Nous avons remarqué que, pour le cas de l'attaque, il arrivait qu'ils soient en désaccord. Comme on peut le voir sur la capture ci-dessous dans l'état actuel Alphabeta choisi d'infecter l'ordinateur 2 alors que Minmax choisi l'ordinateur 3.
-
-\begin{center}
-\includegraphics[scale=0.7]{images/Capture2.PNG}
-\end{center}
-
-Les deux algorithmes mènes à deux états finaux différents, pour Alphabeta on a le défenseur qui gagne et pour Minmax c'est l'attaquant qui gagne. Les défenseurs ont également des valeurs différentes, plus importante chez Alphabeta mais la valeur des défenseurs étant différente ne nous dis rien sur le faite que l'un est plus efficace que l'autre car on fait jouer un attaquant Alphabeta contre un défenseur Alphabeta de même pour Minmax.
-
-\begin{center}
-\includegraphics[scale=0.7]{images/Capture3.PNG}
-\includegraphics[scale=0.7]{images/Capture4.PNG}\\
-\includegraphics[scale=1]{images/Capture5.PNG}
-\end{center}
-
-Nous nous avons donc pensé que Alphabeta favorisé le défenseur et Minmax l'attaquant, nous avons donc tester de faire jouer un Alphabeta attaquant contre un Minmax défenseur et un Minmax attaquant contre un Alphabeta défenseur sur la même génération de graph (étant donnée qu'ils jouent quasiment la même chose on a lancé plusieurs fois le jeu afin de tomber sur un désaccord).
-
-\begin{center}
-\includegraphics[scale=0.7]{images/Capture6.PNG}
-\end{center}
-
-Sur les résultats finaux des deux batailles, on remarque que quand Alphabeta attaque (capture de gauche), il gagne quand même mais il a infecté que 3 ordinateurs sur 5 et quand Minmax attaque (capture de droite) il en a infecté 4 sur 5.
-
-\begin{center}
-\includegraphics[scale=0.7]{images/Capture7.PNG}
-\includegraphics[scale=0.7]{images/Capture8.PNG}\\
-\includegraphics[scale=1]{images/Capture9.PNG}
-\end{center}
-
-Malgré ces testes, nous ne pouvons rien dire sur l'efficacité des ses deux algorithme qui semblent presque équivalent en terme de résultat.
-
 \section{Tests sur le nombre de parcours des nœuds}
 
 Nous allons nous intéresser à comparer le nombre de nœuds que parcourt chaque algorithme. Pour cela, nous avons implémenté un compteur dans le constructeur de la classe de L'IA afin de compter chaque passage dans Minmax et dans Alphabeta.\\
@@ -119,11 +87,15 @@ Dans un second temps, nous allons faire varier la probabilité que deux ordinate
 Nombre de nœuds parcourus en fonction de la probabilité
 \end{center}
 
-On remarque de même que Alphabeta parcours moins de nœuds que Minmax et que plus Minmax parcours de nœuds, plus l'écart entre les deux est important, il y a donc une relation de puissance sur le nombre de nœuds parcourus par ces deux algorithmes.
+On remarque de même que Alphabeta parcours moins de nœuds que Minmax et que plus Minmax parcours de nœuds, plus l'écart entre les deux est important, il y a donc une relation de puissance sur le nombre de nœuds parcourus par ces deux algorithmes. On remarque également quand Minmax parcours très peu de nœuds (<50 nœuds environ), il arrive que Minmax et Alphabeta parcours le même nombre de nœuds comme on peut le voir sur la capture suivante avec Alphabeta en haut et Minmax en dessous.
+
+\begin{center}
+\includegraphics[scale=1]{images/Capture.PNG}
+\end{center}
 
 \section*{Conclusion}
 \addcontentsline{toc}{section}{Conclusion}
 
-Alphabeta et Minmax ayant quasiment les mêmes décisions sur les coups à jouer, Alphabeta est celui qui parcours le moins de nœuds et donc qui est le plus rapide dans sa prise de décision.
+Minmax et Alphabeta prenant la même décision du meilleur coup, Alphabeta est celui qui parcours le moins de nœuds et donc qui est le plus rapide dans sa prise de décision que se soit par l'augmentation de la profondeur de raisonnement mais aussi par l'augmentation du nombre de possibilités de coup à jouer, dans notre cas la probabilité que deux ordinateurs soient connectés.
 
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.5)  3 MAR 2018 16:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.5)  4 MAR 2018 13:01
 entering extended mode
 **./Mori_Leblond_rapport_tpSAD.tex
 (Mori_Leblond_rapport_tpSAD.tex
@@ -642,125 +642,77 @@ Package pdftex.def Info: images/unicaen.png used on input line 22.
 \openout3 = `Mori_Leblond_rapport_tpSAD.toc'.
 
  [1]
-<images/Capture2.PNG, id=16, 180.675pt x 517.935pt>
-File: images/Capture2.PNG Graphic file (type png)
- <use images/Capture2.PNG>
-Package pdftex.def Info: images/Capture2.PNG used on input line 71.
-(pdftex.def)             Requested size: 126.47162pt x 362.55202pt.
-
-<images/Capture3.PNG, id=17, 163.3603pt x 421.575pt>
-File: images/Capture3.PNG Graphic file (type png)
- <use images/Capture3.PNG>
-Package pdftex.def Info: images/Capture3.PNG used on input line 77.
-(pdftex.def)             Requested size: 114.35143pt x 295.10048pt.
-
-<images/Capture4.PNG, id=18, 157.33781pt x 433.62pt>
-File: images/Capture4.PNG Graphic file (type png)
- <use images/Capture4.PNG>
-Package pdftex.def Info: images/Capture4.PNG used on input line 78.
-(pdftex.def)             Requested size: 110.13571pt x 303.53192pt.
-
-[2 <./images/Capture2.PNG>]
-<images/Capture5.PNG, id=23, 176.91093pt x 29.35968pt>
-File: images/Capture5.PNG Graphic file (type png)
-
-<use images/Capture5.PNG>
-Package pdftex.def Info: images/Capture5.PNG used on input line 79.
-(pdftex.def)             Requested size: 176.91049pt x 29.35959pt.
-
-<images/Capture6.PNG, id=24, 174.6525pt x 508.14844pt>
-File: images/Capture6.PNG Graphic file (type png)
-
-<use images/Capture6.PNG>
-Package pdftex.def Info: images/Capture6.PNG used on input line 85.
-(pdftex.def)             Requested size: 122.2559pt x 355.70148pt.
- [3 <./images/Capture3.PNG> <./images/Capture4.PNG> <./images/Capture5.PNG>] <i
-mages/Capture7.PNG, id=31, 156.585pt x 436.63126pt>
-File: images/Capture7.PNG Graphic file (type png)
-
-<use images/Capture7.PNG>
-Package pdftex.def Info: images/Capture7.PNG used on input line 91.
-(pdftex.def)             Requested size: 109.60873pt x 305.63979pt.
-
-<images/Capture8.PNG, id=32, 154.32657pt x 438.13687pt>
-File: images/Capture8.PNG Graphic file (type png)
-
-<use images/Capture8.PNG>
-Package pdftex.def Info: images/Capture8.PNG used on input line 92.
-(pdftex.def)             Requested size: 108.02785pt x 306.69371pt.
-
-<images/Capture9.PNG, id=33, 175.40532pt x 27.85406pt>
-File: images/Capture9.PNG Graphic file (type png)
-
-<use images/Capture9.PNG>
-Package pdftex.def Info: images/Capture9.PNG used on input line 93.
-(pdftex.def)             Requested size: 175.40488pt x 27.85397pt.
- [4 <./images/Capture6.PNG> <./images/Capture7.PNG> <./images/Capture8.PNG>]
-Underfull \hbox (badness 10000) in paragraph at lines 100--101
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
 
  []
 
-<images/Figure_1.png, id=40, 462.528pt x 346.896pt>
+<images/Figure_1.png, id=16, 462.528pt x 346.896pt>
 File: images/Figure_1.png Graphic file (type png)
  <use images/Figure_1.png>
-Package pdftex.def Info: images/Figure_1.png used on input line 105.
+Package pdftex.def Info: images/Figure_1.png used on input line 73.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-<images/Figure_2.png, id=41, 462.528pt x 346.896pt>
+<images/Figure_2.png, id=17, 462.528pt x 346.896pt>
 File: images/Figure_2.png Graphic file (type png)
  <use images/Figure_2.png>
-Package pdftex.def Info: images/Figure_2.png used on input line 106.
+Package pdftex.def Info: images/Figure_2.png used on input line 74.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-<images/Figure_3.png, id=42, 462.528pt x 346.896pt>
+<images/Figure_3.png, id=18, 462.528pt x 346.896pt>
 File: images/Figure_3.png Graphic file (type png)
  <use images/Figure_3.png>
-Package pdftex.def Info: images/Figure_3.png used on input line 107.
+Package pdftex.def Info: images/Figure_3.png used on input line 75.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
-<images/Figure_4.png, id=43, 462.528pt x 346.896pt>
+[2 <./images/Figure_1.png> <./images/Figure_2.png> <./images/Figure_3.png>]
+<images/Figure_4.png, id=25, 462.528pt x 346.896pt>
 File: images/Figure_4.png Graphic file (type png)
  <use images/Figure_4.png>
-Package pdftex.def Info: images/Figure_4.png used on input line 116.
+Package pdftex.def Info: images/Figure_4.png used on input line 84.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-<images/Figure_5.png, id=44, 462.528pt x 346.896pt>
+<images/Figure_5.png, id=26, 462.528pt x 346.896pt>
 File: images/Figure_5.png Graphic file (type png)
  <use images/Figure_5.png>
-Package pdftex.def Info: images/Figure_5.png used on input line 117.
+Package pdftex.def Info: images/Figure_5.png used on input line 85.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-<images/Figure_6.png, id=45, 462.528pt x 346.896pt>
+<images/Figure_6.png, id=27, 462.528pt x 346.896pt>
 File: images/Figure_6.png Graphic file (type png)
  <use images/Figure_6.png>
-Package pdftex.def Info: images/Figure_6.png used on input line 118.
+Package pdftex.def Info: images/Figure_6.png used on input line 86.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-[5 <./images/Capture9.PNG> <./images/Figure_1.png> <./images/Figure_2.png> <./i
-mages/Figure_3.png>] [6 <./images/Figure_4.png> <./images/Figure_5.png> <./imag
-es/Figure_6.png>] (Mori_Leblond_rapport_tpSAD.aux) ) 
+<images/Capture.PNG, id=28, 307.1475pt x 30.86531pt>
+File: images/Capture.PNG Graphic file (type png)
+ <use images/Capture.PNG>
+Package pdftex.def Info: images/Capture.PNG used on input line 93.
+(pdftex.def)             Requested size: 307.14674pt x 30.86522pt.
+
+[3 <./images/Figure_4.png> <./images/Figure_5.png> <./images/Figure_6.png> <./i
+mages/Capture.PNG>] (Mori_Leblond_rapport_tpSAD.aux) ) 
 Here is how much of TeX's memory you used:
- 4596 strings out of 493334
- 60804 string characters out of 3136663
+ 4561 strings out of 493334
+ 60050 string characters out of 3136663
  132323 words of memory out of 3000000
- 8039 multiletter control sequences out of 15000+200000
+ 8011 multiletter control sequences out of 15000+200000
  8563 words of font info for 21 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,5n,30p,494b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiK
-TeX 2.9/fonts/enc/dvips/cm-super/cm-super-t1.enc}<C:/Program Files (x86)/MiKTeX
- 2.9/fonts/type1/public/cm-super/sfbx1200.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/cm-super/sfbx1728.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
-onts/type1/public/cm-super/sfrm1200.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
-s/type1/public/cm-super/sfrm1440.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
-ype1/public/cm-super/sfrm2488.pfb>
-Output written on Mori_Leblond_rapport_tpSAD.pdf (7 pages, 287764 bytes).
+ 40i,5n,30p,541b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/M
+iKTeX 2.9/fonts/enc/dvips/cm-super/cm-super-t1.enc}<C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/cm-super/sfbx1200.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/cm-super/sfbx1728.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/cm-super/sfrm1200.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/cm-super/sfrm1440.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
+/type1/public/cm-super/sfrm2488.pfb>
+Output written on Mori_Leblond_rapport_tpSAD.pdf (4 pages, 222788 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
+ 53 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
