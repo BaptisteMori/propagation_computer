@@ -67,75 +67,6 @@ class IA:
         self.n_mm = 0
         self.n_ab = 0
 
-    def minmax(self,state,d,alphabeta):
-        """
-            Algorithme Minmax
-
-            param (State) state : l'etat du jeu
-            param (int) d : la profondeur dans l'arbre de l'IA
-            param (boolean) alphabeta : boolean pour utilisation ou non de l'algorithme alphabeta
-            return (int,Computer or tuple): la valeur du noeud et le coup a jouer pour aller a ce noeud
-        """
-        if not alphabeta:
-            self.n_mm += 1
-        if d == 0 or state.isFinished():
-            return state.getValue(),None
-        if state.player == "defender":
-            m = float("-inf")
-            c = None
-            for ordi in state.getDefense():
-                for coup in ordi:
-                    if alphabeta:
-                        state_value = self.alphabeta(state.playDefense(coup),m,state.getValue(),d-1)
-                    else:
-                        state_value,c1 = self.minmax(state.playDefense(coup),d-1,alphabeta)
-                    if state_value > m:
-                        m = state_value
-                        c = coup
-        else:
-            m = float("inf")
-            c = None
-            for coup in state.getAttack():
-                if alphabeta:
-                    state_value = self.alphabeta(state.playAttack(coup),state.getValue(),m,d-1)
-                else:
-                    state_value,c1 = self.minmax(state.playAttack(coup),d-1,alphabeta)
-                if state_value < m:
-                    m = state_value
-                    c = coup
-        return m,c
-
-    def alphabeta(self,state,alpha,beta,d):
-        """
-            Algorithme Alphabeta
-
-            param (State) state : l'etat du jeu
-            param (int) alpha : valeur minimum du joueur Max
-            param (int) beta : la valeur maximum du joueur Min
-            param (int) d : la profondeur dans l'arbre de l'IA
-            return (int) : la meilleur valeur obtenable du noeud
-        """
-        self.n_ab += 1
-        if d == 0 or state.isFinished():
-            return state.getValue()
-        else:
-            if state.player == "defender":
-                for ordi in state.getDefense():
-                    for coup in ordi:
-                        alpha = max(alpha,self.alphabeta(state.playDefense(coup),alpha,beta,d-1))
-                        if alpha >= beta:
-                            return alpha
-                return alpha
-            else:
-                for ordi in state.getAttack():
-                    beta = min(beta,self.alphabeta(state.playAttack(ordi),alpha,beta,d-1))
-                    if alpha >= beta:
-                        return beta
-                return beta
-
-    """
-    # version cohérente de minmax et alphabeta mais alphaneta ne marche pas, il provoque des erreurs erreurs de NoneType dans le playDefense
-
     def minmax(self,state,d):
         '''
             Algorithme Minmax
@@ -180,23 +111,31 @@ class IA:
         if d == 0 or state.isFinished():
             return state.getValue(),None
         else:
-            c = None
             if state.player == "defender":
+                m = float("-inf")
+                c = None
                 for ordi in state.getDefense():
                     for coup in ordi:
                         value,action = self.alphabeta(state.playDefense(coup),alpha,beta,d-1)
+                        if value > m:
+                            c = coup
+                            m = value
                         alpha = max(alpha,value)
                         if alpha >= beta:
                             return alpha,coup
                 return alpha,c
             else:
+                m = float("inf")
+                c = None
                 for ordi in state.getAttack():
                     value,action = self.alphabeta(state.playAttack(ordi),alpha,beta,d-1)
+                    if value < m:
+                        c = ordi
+                        m = value
                     beta = min(beta,value)
                     if alpha >= beta:
                         return beta,ordi
                 return beta,c
-    """
 
     def reset(self):
         """
@@ -427,11 +366,11 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         if present_state.player == "attacker":
 
             if not(present_state.isFinished()):
-                value,coup = ia.minmax(new_state,prof_attacker,True)
+                value,coup = ia.alphabeta(new_state,float("-inf"),float("inf"),prof_attacker)
                 present_state = present_state.playAttack(coup)
                 print("choix attacker_alphabeta : " + str(coup))
             if not(present_state_mm.isFinished()):
-                value_mm,coup_mm = ia.minmax(new_state_mm,prof_attacker,False) 
+                value_mm,coup_mm = ia.minmax(new_state_mm,prof_attacker) 
                 present_state_mm = present_state_mm.playAttack(coup_mm)
                 print("choix attacker_minmax : " + str(coup_mm))
             
@@ -442,28 +381,24 @@ def main2Ia(nbOrdi, nbInfected, proba, prof_attacker, prof_defender,sameGraph=[]
         else:
             
             if not(present_state.isFinished()):
-                value,coup = ia.minmax(new_state,prof_defender,True)
+                value,coup = ia.alphabeta(new_state,float("-inf"),float("inf"),prof_defender)
+                present_state = present_state.playDefense(coup)
                 for x in coup:
                     print("choix defender_alphabeta : ",str(x[0]),"--",str(x[1]))
 
             if not(present_state_mm.isFinished()):
-                value_mm,coup_mm = ia.minmax(new_state_mm,prof_defender,False)
+                value_mm,coup_mm = ia.minmax(new_state_mm,prof_defender)
+                present_state_mm = present_state_mm.playDefense(coup_mm)
                 for x in coup_mm:
                     print("choix defender_minmax : ",str(x[0]),"--",str(x[1]))
 
 
             print("n_ab :",ia.n_ab)
-            print("n_mm :",ia.n_mm)
+            print("n_mm :",ia.n_mm) 
             
-            
-                
-            
-                
-            present_state = present_state.playDefense(coup)
-            present_state_mm = present_state_mm.playDefense(coup_mm)
             list_state.append(present_state)
         #ia.reset()
-        pause = input("...")
+        #pause = input("...")
         print("<>"*30)
         print("Value defender_ab :",present_state.getValue())
         print("Value defender_mm :",present_state_mm.getValue())
@@ -586,13 +521,13 @@ def testProba(probaMax):
 
 if __name__ == "__main__":
     
-    main(5,1,0.5,5,5,True)
+    #main(5,1,0.5,5,5,True)
     
     #main2Ia(5,1,0.5,5,5)
     
     #testProf(6)
     
-    #testProba(0.6)
+    testProba(0.6)
 
 
 
