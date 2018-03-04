@@ -133,6 +133,71 @@ class IA:
                         return beta
                 return beta
 
+    """
+    # version cohérente de minmax et alphabeta mais alphaneta ne marche pas, il provoque des erreurs erreurs de NoneType dans le playDefense
+
+    def minmax(self,state,d):
+        '''
+            Algorithme Minmax
+
+            param (State) state : l'etat du jeu
+            param (int) d : la profondeur dans l'arbre de l'IA
+            return (int,Computer or tuple): la valeur du noeud et le coup a jouer pour aller a ce noeud
+        '''
+        self.n_mm += 1
+        if d == 0 or state.isFinished():
+            return state.getValue(),None
+        if state.player == "defender":
+            m = float("-inf")
+            c = None
+            for ordi in state.getDefense():
+                for coup in ordi:
+                    state_value,c1 = self.minmax(state.playDefense(coup),d-1)
+                    if state_value > m:
+                        m = state_value
+                        c = coup
+        else:
+            m = float("inf")
+            c = None
+            for coup in state.getAttack():
+                state_value,c1 = self.minmax(state.playAttack(coup),d-1)
+                if state_value < m:
+                    m = state_value
+                    c = coup
+        return m,c
+
+    def alphabeta(self,state,alpha,beta,d):
+        '''
+            Algorithme Alphabeta
+
+            param (State) state : l'etat du jeu
+            param (int) alpha : valeur minimum du joueur Max
+            param (int) beta : la valeur maximum du joueur Min
+            param (int) d : la profondeur dans l'arbre de l'IA
+            return (int,Computer or tuple) : la meilleur valeur obtenable du noeud
+        '''
+        self.n_ab += 1
+        if d == 0 or state.isFinished():
+            return state.getValue(),None
+        else:
+            c = None
+            if state.player == "defender":
+                for ordi in state.getDefense():
+                    for coup in ordi:
+                        value,action = self.alphabeta(state.playDefense(coup),alpha,beta,d-1)
+                        alpha = max(alpha,value)
+                        if alpha >= beta:
+                            return alpha,coup
+                return alpha,c
+            else:
+                for ordi in state.getAttack():
+                    value,action = self.alphabeta(state.playAttack(ordi),alpha,beta,d-1)
+                    beta = min(beta,value)
+                    if alpha >= beta:
+                        return beta,ordi
+                return beta,c
+    """
+
     def reset(self):
         """
             rinitialise les compteurs
